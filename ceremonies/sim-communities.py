@@ -48,7 +48,8 @@ class Person:
     def y(self):
         return self.pos[1]
         
-        
+    def has_met(self, p):
+        return (p in self.meetup_buddies)
         
 class City:
     citizens = set()
@@ -60,7 +61,7 @@ class City:
         for iter in range(n):
             _x = np.random.normal(self.x, self.r)
             _y = np.random.normal(self.y, self.r)
-            _p = Person(_x,_y,(np.random.random()/2+.5)*self.r*2)
+            _p = Person(_x,_y,(np.random.random()/2+.9)*self.r*2)
             population.add(_p)
             self.citizens.add(_p)
 ## plotting functions
@@ -124,7 +125,20 @@ def plot_orphans(orphans):
         plt.plot(p.x,p.y,'rx')
     plt.title("Number of orphans: %i" % len(orphans))    
     print("number of orphans: %i" % len(orphans))
-    
+
+def takeSecond(elem):
+    return elem[1]
+
+def is_valid_meetup(m):
+    for _p in m:
+        for _q in m.difference(set(_p)):
+            havemet = havemet + _p.has_met(_q)
+            if np.linalg.norm(_p.pos-_q.pos) > _p.r+_q.r:
+                return False
+    if havemet > len(m)*MEETUP_REVISIT_RATIO:
+        return False
+    return True
+            
 ## graph partitioning
 def assign_meetups():
     ## create an undirected graph with all possible matchings subject to range limits
@@ -139,72 +153,66 @@ def assign_meetups():
             if np.linalg.norm(p.pos-q.pos) < p.r+q.r:
                 if (p != q):
                     G.add_edge(p,q)
-    
-    ## graph partitioning into fully connected subgraphs
-    _cliques = list(nx.find_cliques(G))
-    # take maximal clique
-    _clique_subgraphs = [max(_cliques, key=len)]
-    print("maximal clique: %%%%%%%%%%%%%%%%%%")
-    print([p.id for p in _clique_subgraphs[0]])
-
-    for c in _cliques:
-        print("checking clique")
-        print([p.id for p in c])
-        #if c shares no persons with booked cliques
-        if not set([p for l in _clique_subgraphs for p in l])&set(c):
-            _clique_subgraphs.append(c)
-            print("added")
 
     _meetups = []
-    _orphans = registry.difference(set([p for l in _clique_subgraphs for p in l])) 
-    for c in _clique_subgraphs:
-        print("found disjoint clique")
-        print([p.id for p in c])
-
-        if len(c)<MIN_MEETUP:
-            _orphans = _orphans.union(c)
-            continue
-        #get unfrozen copy of subgraph
-        Gc = nx.Graph(G.subgraph(c))
-        # now find all pairs that have met at the last ceremony and cut the graph there
-        for p in c:
-            assert(isinstance(p, Person))
-            for buddy in p.meetup_buddies:
-                try:
-                    Gc.remove_edge(p,buddy)
-                except:
-                    pass
-                    
-        lc = list(nx.find_cliques(Gc))
-        # how many persons are in a clique < MIN_MEETUP
-        #n_orphans = sum([n for n in [len(l) for l in lc] if n < MIN_MEETUP])
-        clique_orphans = set()
-        clique_meetups=[]
-        # first, create smallest possible meetups with people that haven't met in the last round
-        for cc in lc:
-            n = len(cc)
-            if n< MIN_MEETUP:
-                for p in cc:
-                    clique_orphans.add(p)
+    while True:
+        ## start assigning nodes of low degree
+        ndeg = G.degree(G.nodes)
+        if not ndeg:
+            break
+        #degree <2 has no chance to meet
+        ordered_nodes  = []
+        for deg in range(2,1+max([value for key,value in ndeg])):
+            _ps = [key for key, value in ndeg if value == deg]
+            # if there are multiple, sort by number of connected buddies
+            # who has many former buddies now is more difficult to assign
+            _psb = [(p, len(p.meetup_buddies)) for p in _ps]
+            _psb.sort(key=takeSecond, reverse=True)
+            ordered_nodes = ordered_nodes + [p for (p,n) in _psb]
+        if not ordered_nodes:
+            break
+        print("assignement order:")
+        print([p.id for p in ordered_nodes])
+        # find all cliques per node and group
+        # low degrees first
+        _p = ordered_nodes[0]
+        print("assigning %i" % _p.id)
+        _candidates=[]
+        for clq in nx.cliques_containing_node(G,_p):
+            print("evaluating clique")
+            print([p.id for p in clq])
+            if len(clq)<3:
                 continue
-            while n >= MIN_MEETUP:
-                clique_meetups.append(set())
-                for i in range(MIN_MEETUP) if n>=2*MIN_MEETUP else range(n):
-                    clique_meetups[-1].add(cc.pop())
-                    n = n-1
-        #now add one orphan to each meetup until limit
-        #FIXME: this is very conservative, leaving unnecessary orphans
-        for m in clique_meetups:
-            for i in range(np.int_(np.floor(len(m)*MEETUP_REVISIT_RATIO))):
-                if len(clique_orphans)==0:
-                    print("all orphans could be placed")
-                    break
-                m.add(clique_orphans.pop())
-                
-        _meetups = _meetups + clique_meetups
-        _orphans = _orphans.union(clique_orphans)
-    # give orphans an option to go increase their radius
-    
+            clq.remove(_p)
+            _psdeg = [(p, _p.has_met(p), ndeg[p]) for p in clq]
+            _psdeg.sort(key=lambda x: (x[1], x[2]), reverse=False)
+            print([(d[0].id, d[1], d[2]) for d in _psdeg])
+            if _psdeg[0][1]==True:
+                print("all have met before. dropping")
+                continue
+            _candidates.append((set([_p, _psdeg[0][0], _psdeg[1][0]]),_psdeg[0][1]+_psdeg[1][1]))
+            print("found candidate with malus %i" % _candidates[-1][1])
+            print([p.id for p in _candidates[-1][0]])
+        if _candidates:
+            _candidates.sort(key=lambda x: x[1])
+            _meetups.append(_candidates[0][0])
+            # now remove these from graph before iterating
+            G.remove_nodes_from(_meetups[-1])
+            
+        else:
+            #no meetups possible for this person
+            print("cannot assign %i" % _p.id)
+            G.remove_node(_p)
+        
+ 
+    _orphans = registry.difference(set([p for l in _meetups for p in l])) 
+    # now lets assign orphans if possible
+    for _p in _orphans:
+        for m in _meetups:
+            if is_valid_meetup(m.union(set(_p))):
+                m.add(_p)
+                print("found a meetup for orphan %i" % _p)
+                break
     
     print("%i meetups:" % len(_meetups))                         
     for m in _meetups:
@@ -214,6 +222,8 @@ def assign_meetups():
     return (_meetups, _orphans)
     
 def perform_meetups(meetups):
+    for p in population:
+        p.meetup_buddies = set()
     for m in meetups:
         for p in m:
             buddies= m.copy()
@@ -222,10 +232,11 @@ def perform_meetups(meetups):
                 
 city1 = City(0,0,1)        
 cities.add(city1)
-city2 = City(5,0,1)
-cities.add(city2)
 city1.newcomers(9)
-city2.newcomers(3)
+
+#city2.newcomers(3)
+#city2 = City(5,0,1)
+#cities.add(city2)
 
 plt.close('all')
 plt.figure()
@@ -242,9 +253,20 @@ plot_orphans(orphans)
 perform_meetups(meetups)
 
 # second ceremony
+print("%%%%%%% new ceremony%%%%%%%%%")
 registry = population.copy()
 ceremony_id = 2
 (meetups,orphans)=assign_meetups()
 meetup_locations= decide_meetup_locations(meetups)
 plt.figure()
 plot_orphans(orphans)
+perform_meetups(meetups)
+# third ceremony
+print("%%%%%%% new ceremony%%%%%%%%%")
+registry = population.copy()
+ceremony_id = 3
+(meetups,orphans)=assign_meetups()
+meetup_locations= decide_meetup_locations(meetups)
+plt.figure()
+plot_orphans(orphans)
+perform_meetups(meetups)
