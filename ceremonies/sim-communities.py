@@ -12,10 +12,9 @@ import descartes
 import networkx as nx
 
 MIN_MEETUP = 3 
-OPT_MEETUP = 8
 MAX_MEETUP = 12
 # share of participants that may have met at the last ceremony
-MEETUP_REVISIT_RATIO=0.333
+MEETUP_REVISIT_RATIO=1.0/3.0
 
 # all people allover the world that have participated once or more times
 population = set()
@@ -61,7 +60,7 @@ class City:
         for iter in range(n):
             _x = np.random.normal(self.x, self.r)
             _y = np.random.normal(self.y, self.r)
-            _p = Person(_x,_y,(np.random.random()/2+.9)*self.r*2)
+            _p = Person(_x,_y,(np.random.random()/2+.5)*self.r*2)
             population.add(_p)
             self.citizens.add(_p)
 ## plotting functions
@@ -130,12 +129,21 @@ def takeSecond(elem):
     return elem[1]
 
 def is_valid_meetup(m):
+    print("checking validity of meetup")
+    print([p.id for p in m])
+    if len(m)<MIN_MEETUP:
+        return False
+    if len(m)>MAX_MEETUP:
+        return False
+    havemet=0
     for _p in m:
-        for _q in m.difference(set(_p)):
+        for _q in m.difference(set([_p])):
             havemet = havemet + _p.has_met(_q)
             if np.linalg.norm(_p.pos-_q.pos) > _p.r+_q.r:
                 return False
-    if havemet > len(m)*MEETUP_REVISIT_RATIO:
+    print("out of %i participants, %i pairings have met at the last ceremony" % (len(m), havemet/2))
+    #havemet counts each encounter twice!
+    if havemet/2 > len(m)*MEETUP_REVISIT_RATIO:
         return False
     return True
             
@@ -187,8 +195,8 @@ def assign_meetups():
             _psdeg = [(p, _p.has_met(p), ndeg[p]) for p in clq]
             _psdeg.sort(key=lambda x: (x[1], x[2]), reverse=False)
             print([(d[0].id, d[1], d[2]) for d in _psdeg])
-            if _psdeg[0][1]==True:
-                print("all have met before. dropping")
+            if ((_psdeg[0][1]==True) or (_psdeg[1][1]==True and _psdeg[0][0].has_met(_psdeg[1][0]))):
+                print("too many have met before. dropping")
                 continue
             _candidates.append((set([_p, _psdeg[0][0], _psdeg[1][0]]),_psdeg[0][1]+_psdeg[1][1]))
             print("found candidate with malus %i" % _candidates[-1][1])
@@ -209,11 +217,12 @@ def assign_meetups():
     # now lets assign orphans if possible
     for _p in _orphans:
         for m in _meetups:
-            if is_valid_meetup(m.union(set(_p))):
+            if is_valid_meetup(m.union(set([_p]))):
                 m.add(_p)
-                print("found a meetup for orphan %i" % _p)
+                print("found a meetup for orphan %i" % _p.id)
                 break
-    
+    for m in _meetups:
+        assert(is_valid_meetup(m))
     print("%i meetups:" % len(_meetups))                         
     for m in _meetups:
         print([p.id for p in m])
@@ -234,9 +243,10 @@ city1 = City(0,0,1)
 cities.add(city1)
 city1.newcomers(9)
 
-#city2.newcomers(3)
-#city2 = City(5,0,1)
-#cities.add(city2)
+
+city2 = City(5,0,1)
+cities.add(city2)
+city2.newcomers(3)
 
 plt.close('all')
 plt.figure()
