@@ -78,6 +78,7 @@ def plot_population():
     ax.set_xlim(-5, 10); ax.set_ylim(-5, 5)
     plt.title('population')
     plt.show()
+    plt.savefig("sim-communities-fig" + str(plt.gcf().number)+ ".svg")
 
 def decide_meetup_locations(meetups):
     cmap = list(plt.get_cmap('Set1').colors)[::-1]
@@ -85,8 +86,10 @@ def decide_meetup_locations(meetups):
     for m in meetups:
         plt.figure()
         ax = plt.gca()
-
-        col= cmap.pop()
+        try:
+            col= cmap.pop()
+        except:
+            pass
         circles = [sg.Point(p.x,p.y).buffer(p.r) for p in m]
         for c in circles:
             ax.add_patch(descartes.PolygonPatch(c, fc=col, alpha=0.1))
@@ -96,7 +99,7 @@ def decide_meetup_locations(meetups):
         ax.add_patch(descartes.PolygonPatch(target, fc=col, ec='k', alpha=0.6))
         ax.hold(True)
         for p in m:
-            ax.plot(p.x,p.y, color=col, marker='d')
+            ax.plot(p.x,p.y, color='white', marker='o', markersize=10)
             plt.text(p.x,p.y,p.id, ha='center', va='center')
             for q in m:
                 if q in p.meetup_buddies:
@@ -104,7 +107,12 @@ def decide_meetup_locations(meetups):
         loc = target.centroid.coords[0]
         ax.plot(loc[0],loc[1], color='k', marker='+')
         plt.title('ceremony %i meetup' % ceremony_id)
+        ax.set_aspect('equal')
+        ax.set_xlim(-5, 10); ax.set_ylim(-5, 5)
+        plt.xlabel('longitude')    
+        plt.ylabel('latitude')    
         plt.show()
+        plt.savefig("sim-communities-fig" + str(plt.gcf().number)+ ".svg")
         meetup_locations.append(loc)
     print("%i Meetups" % len(meetups))
     return meetup_locations
