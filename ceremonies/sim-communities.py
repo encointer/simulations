@@ -16,6 +16,9 @@ MAX_MEETUP = 12
 # share of participants that may have met at the last ceremony
 MEETUP_REVISIT_RATIO=1.0/3.0
 
+# meetup range intersection is only checked pairwise, not real intersection
+RANGE_TOLERANCE = 1.2
+
 # all people allover the world that have participated once or more times
 population = set()
 
@@ -25,15 +28,24 @@ meetups = []
 
 cities = set()
 
+class Ceremony:
+    def __init__(self, id, meetups):
+        self.meetups=meetups
+        self.id = id 
 
-#class ceremony:
-
-#class meetup:
+class Meetup:
+    location = ()
+    connected_meetups = set()
+    def __init__(self, m):
+        for p in m:
+            assert(isinstance(p, Person))
+        self.participants = m
+       
     
 class Person:
     neighbors = set()
     meetup_buddies = list()
-    
+    wallet = dict()
     def __init__(self, x, y, r):
         self.pos = np.array([x,y])
         self.r=r
@@ -70,7 +82,7 @@ def plot_population():
     plt.hold(True)
     for p in population:
         assert isinstance(p,Person)
-        pnt = sg.Point(p.x,p.y).buffer(p.r)
+        pnt = sg.Point(p.x,p.y).buffer(p.r*RANGE_TOLERANCE)
         ax.add_patch(descartes.PolygonPatch(pnt, fc='b', ec='k', alpha=0.2))
         plt.text(p.x,p.y,p.id, ha='center', va='center')
     
@@ -82,7 +94,7 @@ def plot_population():
 
 def decide_meetup_locations(meetups):
     cmap = list(plt.get_cmap('Set1').colors)[::-1]
-    meetup_locations = []
+    
     for m in meetups:
         plt.figure()
         ax = plt.gca()
@@ -90,18 +102,20 @@ def decide_meetup_locations(meetups):
             col= cmap.pop()
         except:
             pass
-        circles = [sg.Point(p.x,p.y).buffer(p.r) for p in m]
+        circles = [sg.Point(p.x,p.y).buffer(p.r*RANGE_TOLERANCE) for p in m.participants]
         for c in circles:
             ax.add_patch(descartes.PolygonPatch(c, fc=col, alpha=0.1))
         target = circles.pop()
         for c in circles:
             target=target.intersection(c)
+        print("intersecting meetup")
+        print([p.id for p in m.participants])
         ax.add_patch(descartes.PolygonPatch(target, fc=col, ec='k', alpha=0.6))
         ax.hold(True)
-        for p in m:
+        for p in m.participants:
             ax.plot(p.x,p.y, color='white', marker='o', markersize=10)
             plt.text(p.x,p.y,p.id, ha='center', va='center')
-            for q in m:
+            for q in m.participants:
                 if q in p.meetup_buddies:
                     ax.add_line(plt.Line2D((p.x, q.x), (p.y, q.y)))
         loc = target.centroid.coords[0]
@@ -113,9 +127,9 @@ def decide_meetup_locations(meetups):
         plt.ylabel('latitude')    
         plt.show()
         plt.savefig("sim-communities-fig" + str(plt.gcf().number)+ ".svg")
-        meetup_locations.append(loc)
-    print("%i Meetups" % len(meetups))
-    return meetup_locations
+        m.location = loc
+
+    
 
 def plot_orphans(orphans):
     plot_population()
@@ -228,14 +242,14 @@ def assign_meetups():
         print([p.id for p in m])
     print("%i orphans:" % len(_orphans))
     print([p.id for p in _orphans])
-    return (_meetups, _orphans)
+    return ([Meetup(m) for m in _meetups], _orphans)
     
 def perform_meetups(meetups):
     for p in population:
         p.meetup_buddies = set()
     for m in meetups:
-        for p in m:
-            buddies= m.copy()
+        for p in m.participants:
+            buddies= m.participants.copy()
             buddies.remove(p)
             p.meetup_buddies = buddies
                 
@@ -252,31 +266,33 @@ plt.close('all')
 plt.figure()
 plot_population()
 
+ceremonies = []
 #everybody regsiters
 registry = population.copy()
-ceremony_id = 1
+print("%%%%%%% new ceremony%%%%%%%%%")
+ceremony_id=1
 (meetups,orphans)=assign_meetups()
-meetup_locations= decide_meetup_locations(meetups)
+decide_meetup_locations(meetups)
+ceremonies.append(Ceremony(ceremony_id,meetups))
 plt.figure()
 plot_orphans(orphans)
-
 perform_meetups(meetups)
-
-# second ceremony
 print("%%%%%%% new ceremony%%%%%%%%%")
 registry = population.copy()
 ceremony_id = 2
 (meetups,orphans)=assign_meetups()
-meetup_locations= decide_meetup_locations(meetups)
+decide_meetup_locations(meetups)
+ceremonies.append(Ceremony(ceremony_id,meetups))
 plt.figure()
 plot_orphans(orphans)
 perform_meetups(meetups)
-# third ceremony
+
 print("%%%%%%% new ceremony%%%%%%%%%")
 registry = population.copy()
 ceremony_id = 3
 (meetups,orphans)=assign_meetups()
-meetup_locations= decide_meetup_locations(meetups)
+decide_meetup_locations(meetups)
+ceremonies.append(Ceremony(ceremony_id,meetups))
 plt.figure()
 plot_orphans(orphans)
 perform_meetups(meetups)
