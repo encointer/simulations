@@ -3,7 +3,7 @@
 """
 Created on Sat Jan  5 20:00:42 2019
 
-@author: brenzi
+@author: Alain Brenzikofer, encointer.org
 """
 import numpy as np
 import shapely.geometry as sg
@@ -28,14 +28,57 @@ meetups = []
 
 cities = set()
 
+class Seed:
+    def __init__(self, ceremony, location):
+        self.ceremony = ceremony
+        self.location = location
+        self.successor=None
+        
 class Ceremony:
-    def __init__(self, id, meetups):
+    def __init__(self, last, meetups):
         self.meetups=meetups
-        self.id = id 
-
+        self.last = last
+        if not last:
+            self.id = 1
+        else:
+            self.id = last.id+1
+        self.assign_seeds()
+            
+    def assign_seeds(self):
+        #create graph to group islands
+        G = nx.Graph()
+        G.add_nodes_from(self.meetups)
+        for m in self.meetups:
+            for n in m.adjacent_meetups:
+                G.add_edge(m,n)
+        islands = [set(g.nodes) for g in nx.connected_component_subgraphs(G)]
+        for island in islands:
+            people = [p for m in island for p in m.participants]
+            #see if there is a seed already
+            seeds = [p.seed for p in people if p.seed]
+            if not seeds:
+                #assign new seed to everybody
+                seed = Seed(self, list(island)[0].location)
+            else:
+                if len(seeds)==1:
+                    seed = seeds[0]
+                else:
+                    #the oldest seed wins. 
+                    age = [(s, s.ceremony.id) for s in seeds]
+                    age.sort(key = lambda x: x[1])
+                    seed = age[0][0]
+                    #all others will be succeeded by winner
+                    seeds.remove(seed)
+                    for s in seeds:
+                        s.successor=seed
+            for p in people:
+                p.seed = seed
+            
+        
+        
 class Meetup:
     location = ()
-    connected_meetups = set()
+    adjacent_meetups = set()
     def __init__(self, m):
         for p in m:
             assert(isinstance(p, Person))
@@ -46,6 +89,7 @@ class Person:
     neighbors = set()
     meetup_buddies = list()
     wallet = dict()
+    seed = None
     def __init__(self, x, y, r):
         self.pos = np.array([x,y])
         self.r=r
@@ -175,7 +219,7 @@ def assign_meetups():
             if np.linalg.norm(p.pos-q.pos) < p.r+q.r:
                 if (p != q):
                     G.add_edge(p,q)
-
+    Gcpy = G.copy()
     _meetups = []
     while True:
         ## start assigning nodes of low degree
@@ -235,6 +279,8 @@ def assign_meetups():
                 m.add(_p)
                 print("found a meetup for orphan %i" % _p.id)
                 break
+    #refresh
+    _orphans = registry.difference(set([p for l in _meetups for p in l])) 
     for m in _meetups:
         assert(is_valid_meetup(m))
     print("%i meetups:" % len(_meetups))                         
@@ -242,7 +288,16 @@ def assign_meetups():
         print([p.id for p in m])
     print("%i orphans:" % len(_orphans))
     print([p.id for p in _orphans])
-    return ([Meetup(m) for m in _meetups], _orphans)
+    
+    #instantiate meetup objects and find adjacent meetups used for grouping the minting
+    print("link adjacent meetups")
+    _meetupobjs = [Meetup(m) for m in _meetups]
+    for mo in _meetupobjs:
+        mo.adjacent_meetups = set()
+        for mu in _meetupobjs:
+            if mo != mu and nx.has_path(Gcpy, list(mo.participants)[0], list(mu.participants)[0]):
+                mo.adjacent_meetups.add(mu)
+    return (_meetupobjs, _orphans)
     
 def perform_meetups(meetups):
     for p in population:
@@ -266,14 +321,13 @@ plt.close('all')
 plt.figure()
 plot_population()
 
-ceremonies = []
 #everybody regsiters
 registry = population.copy()
 print("%%%%%%% new ceremony%%%%%%%%%")
 ceremony_id=1
 (meetups,orphans)=assign_meetups()
 decide_meetup_locations(meetups)
-ceremonies.append(Ceremony(ceremony_id,meetups))
+cer = Ceremony(None,meetups)
 plt.figure()
 plot_orphans(orphans)
 perform_meetups(meetups)
@@ -282,17 +336,16 @@ registry = population.copy()
 ceremony_id = 2
 (meetups,orphans)=assign_meetups()
 decide_meetup_locations(meetups)
-ceremonies.append(Ceremony(ceremony_id,meetups))
+cer = Ceremony(cer,meetups)
 plt.figure()
 plot_orphans(orphans)
 perform_meetups(meetups)
-
 print("%%%%%%% new ceremony%%%%%%%%%")
 registry = population.copy()
 ceremony_id = 3
 (meetups,orphans)=assign_meetups()
 decide_meetup_locations(meetups)
-ceremonies.append(Ceremony(ceremony_id,meetups))
+cer = Ceremony(cer,meetups)
 plt.figure()
 plot_orphans(orphans)
 perform_meetups(meetups)
