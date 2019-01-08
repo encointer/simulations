@@ -1,9 +1,19 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Sat Jan  5 20:00:42 2019
-
 @author: Alain Brenzikofer, encointer.org
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 """
 import numpy as np
 import shapely.geometry as sg
@@ -19,6 +29,8 @@ MEETUP_REVISIT_RATIO=1.0/3.0
 # meetup range intersection is only checked pairwise, not real intersection
 RANGE_TOLERANCE = 1.2
 
+REWARD = 1.0
+
 # all people allover the world that have participated once or more times
 population = set()
 
@@ -27,6 +39,9 @@ registry = set()
 meetups = []
 
 cities = set()
+
+#dict[Seed][Person]
+wallets = dict()
 
 class Seed:
     def __init__(self, ceremony, location):
@@ -55,45 +70,48 @@ class Ceremony:
         for island in islands:
             people = [p for m in island for p in m.participants]
             #see if there is a seed already
-            seeds = [p.seed for p in people if p.seed]
+            seeds = [p.seeds[0] for p in people if p.seeds]
             if not seeds:
                 #assign new seed to everybody
                 seed = Seed(self, list(island)[0].location)
+                wallets[seed] = dict()
             else:
                 if len(seeds)==1:
                     seed = seeds[0]
                 else:
                     #the oldest seed wins. 
-                    age = [(s, s.ceremony.id) for s in seeds]
-                    age.sort(key = lambda x: x[1])
-                    seed = age[0][0]
+                    seedage = [(s, s.ceremony.id) for s in seeds]
+                    seedage.sort(key = lambda x: x[1])
+                    seed = seedage[0][0]
                     #all others will be succeeded by winner
                     seeds.remove(seed)
                     for s in seeds:
                         s.successor=seed
             for p in people:
-                p.seed = seed
+                p.seeds.append(seed)
+            for m in island:
+                m.seed = seed
             
         
         
 class Meetup:
-    location = ()
-    adjacent_meetups = set()
     def __init__(self, m):
         for p in m:
             assert(isinstance(p, Person))
         self.participants = m
+        self.adjacent_meetups = set()
+        self.location = ()
        
     
 class Person:
-    neighbors = set()
-    meetup_buddies = list()
-    wallet = dict()
-    seed = None
     def __init__(self, x, y, r):
         self.pos = np.array([x,y])
         self.r=r
         self.id = len(population)+1
+        #self.wallet = dict() #person maintains one balance per seed in a dict
+        self.seeds = list()   
+        self.meetup_buddies = list()
+        self.neighbors = set()
         
     @property
     def x(self):
@@ -107,11 +125,20 @@ class Person:
         return (p in self.meetup_buddies)
         
 class City:
-    citizens = set()
+    
     def __init__(self, x, y, r):
-        self.x=x
-        self.y=y
+        self.pos=np.array([x,y])
         self.r=r
+        self.citizens = set()
+
+    @property
+    def x(self):
+        return self.pos[0]
+
+    @property
+    def y(self):
+        return self.pos[1]
+        
     def newcomers(self, n):
         for iter in range(n):
             _x = np.random.normal(self.x, self.r)
@@ -135,6 +162,13 @@ def plot_population():
     plt.title('population')
     plt.show()
     plt.savefig("sim-communities-fig" + str(plt.gcf().number)+ ".svg")
+
+def print_wallets():
+    for seed in wallets.keys():
+        print("Balances for seed at %f,%f" % seed.location)
+        for p, bal in wallets[seed].items():
+            print("id %i: %f" % (p.id, bal))
+
 
 def decide_meetup_locations(meetups):
     cmap = list(plt.get_cmap('Set1').colors)[::-1]
@@ -299,23 +333,24 @@ def assign_meetups():
                 mo.adjacent_meetups.add(mu)
     return (_meetupobjs, _orphans)
     
-def perform_meetups(meetups):
+def perform_ceremony(ceremony):
     for p in population:
         p.meetup_buddies = set()
-    for m in meetups:
+    for m in ceremony.meetups:
         for p in m.participants:
             buddies= m.participants.copy()
             buddies.remove(p)
             p.meetup_buddies = buddies
+            #minting for the seed of this meetup
+            if p in wallets[m.seed].keys():
+                wallets[m.seed][p] += REWARD
+            else:
+                wallets[m.seed][p] = REWARD
                 
 city1 = City(0,0,1)        
 cities.add(city1)
 city1.newcomers(9)
 
-
-city2 = City(5,0,1)
-cities.add(city2)
-city2.newcomers(3)
 
 plt.close('all')
 plt.figure()
@@ -330,7 +365,13 @@ decide_meetup_locations(meetups)
 cer = Ceremony(None,meetups)
 plt.figure()
 plot_orphans(orphans)
-perform_meetups(meetups)
+perform_ceremony(cer)
+
+#new participants
+city2 = City(10,0,1)
+cities.add(city2)
+city2.newcomers(9)
+
 print("%%%%%%% new ceremony%%%%%%%%%")
 registry = population.copy()
 ceremony_id = 2
@@ -339,7 +380,13 @@ decide_meetup_locations(meetups)
 cer = Ceremony(cer,meetups)
 plt.figure()
 plot_orphans(orphans)
-perform_meetups(meetups)
+perform_ceremony(cer)
+
+#one person pays a visit to the other city
+list(city2.citizens)[0].pos = city1.pos
+#list(city1.citizens)[0].pos = city2.pos
+
+
 print("%%%%%%% new ceremony%%%%%%%%%")
 registry = population.copy()
 ceremony_id = 3
@@ -348,4 +395,6 @@ decide_meetup_locations(meetups)
 cer = Ceremony(cer,meetups)
 plt.figure()
 plot_orphans(orphans)
-perform_meetups(meetups)
+perform_ceremony(cer)
+
+print_wallets()
