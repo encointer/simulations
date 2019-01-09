@@ -138,6 +138,9 @@ class Person:
         
     def has_met(self, p):
         return (p in self.meetup_buddies)
+    def balances(self):
+        return [(s.location, wallets[s][self]) if (self in wallets[s]) else (s.location, 0.0) for s in wallets.keys() ]
+            
         
 class City:
     
@@ -410,12 +413,14 @@ plot_orphans(orphans)
 perform_ceremony(cer)
 
 #one person emigrates to the other city
-p = list(city2.citizens)[0]
-p.pos = city1.pos
+expat = list(city2.citizens)[0]
+expat.pos = city1.pos
 #expat adopts new local currency
-p.seed_preference = [city1.seed] + p.seed_preference
+expat.seed_preference = [city1.seed] + expat.seed_preference
 
-#list(city1.citizens)[0].pos = city2.pos
+#another person just visits the other city. not changing seed preference
+visitor=list(city1.citizens)[0]
+visitor.pos = city2.pos
 
 
 print("%%%%%%% new ceremony%%%%%%%%%")
