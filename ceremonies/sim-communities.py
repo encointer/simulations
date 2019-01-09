@@ -3,6 +3,12 @@
 """
 @author: Alain Brenzikofer, encointer.org
 
+This simulation creates populations of persons in cities, assigns people 
+to meetups according to encointer rules for successuve ceremonies and 
+mints coins.
+Along the way it plots explanatory figures for meetup assignments
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -70,28 +76,35 @@ class Ceremony:
         for island in islands:
             people = [p for m in island for p in m.participants]
             #see if there is a seed already
-            seeds = [p.seeds[0] for p in people if p.seeds]
-            if not seeds:
+            seedprefs = [p.seed_preference[0] for p in people if p.seed_preference]
+
+            #find closest city
+            iloc = list(island)[0].location
+            cit = [(c, np.linalg.norm(iloc-c.pos)) for c in cities]
+            cit.sort(key = lambda x: x[1])
+            icity = cit[0][0]
+            if not seedprefs:
                 #assign new seed to everybody
-                seed = Seed(self, list(island)[0].location)
+                seed = Seed(self, iloc)
                 wallets[seed] = dict()
+                icity.seed = seed # might be overwritten by other island. don't care for now
+                for p in people:
+                    p.seeds.append(seed)
+                    p.seed_preference.append(seed) # we assume loyalty with home town by default
+                for m in island:
+                    m.seeds = [seed]
             else:
-                if len(seeds)==1:
-                    seed = seeds[0]
-                else:
-                    #the oldest seed wins. 
-                    seedage = [(s, s.ceremony.id) for s in seeds]
-                    seedage.sort(key = lambda x: x[1])
-                    seed = seedage[0][0]
-                    #all others will be succeeded by winner
-                    seeds.remove(seed)
-                    for s in seeds:
-                        s.successor=seed
-            for p in people:
-                p.seeds.append(seed)
-            for m in island:
-                m.seed = seed
-            
+                for m in island:
+                    #collect seeds linked directly or indirectly to this meetup
+                    m.seeds = [s for p in m.participants for s in p.seeds]
+                    for p in people:
+                        if not p.seeds:
+                            # adopt the seed preference from most other participants
+                            l=[p.seed_preference[0] for p in m.participants if p.seed_preference]
+                            seed = max([(s, l.count(s)) for s in l])[0]
+                            p.seeds.append(seed)
+                            p.seed_preference.append(seed)
+                            
         
         
 class Meetup:
@@ -101,6 +114,7 @@ class Meetup:
         self.participants = m
         self.adjacent_meetups = set()
         self.location = ()
+        self.seeds = set()
        
     
 class Person:
@@ -109,7 +123,8 @@ class Person:
         self.r=r
         self.id = len(population)+1
         #self.wallet = dict() #person maintains one balance per seed in a dict
-        self.seeds = list()   
+        self.seeds = list()  
+        self.seed_preference = list() #which currency color should be minted by preference?
         self.meetup_buddies = list()
         self.neighbors = set()
         
@@ -130,6 +145,7 @@ class City:
         self.pos=np.array([x,y])
         self.r=r
         self.citizens = set()
+        self.seed = None
 
     @property
     def x(self):
@@ -341,11 +357,22 @@ def perform_ceremony(ceremony):
             buddies= m.participants.copy()
             buddies.remove(p)
             p.meetup_buddies = buddies
+            
+            #only allow seeds that were visited at least 
+            #once before by one meetup participant
+            seeds = [s for s in p.seed_preference if s in m.seeds]
+            if not seeds:
+                print("dismissed %i from minting" % p.id)
+                print(m.seeds)
+                print([s.location for s in m.seeds])
+                print(p.seed_preference[0].location)
+                continue
+            seed=seeds[0]
             #minting for the seed of this meetup
-            if p in wallets[m.seed].keys():
-                wallets[m.seed][p] += REWARD
+            if p in wallets[seed].keys():
+                wallets[seed][p] += REWARD
             else:
-                wallets[m.seed][p] = REWARD
+                wallets[seed][p] = REWARD
                 
 city1 = City(0,0,1)        
 cities.add(city1)
@@ -382,8 +409,12 @@ plt.figure()
 plot_orphans(orphans)
 perform_ceremony(cer)
 
-#one person pays a visit to the other city
-list(city2.citizens)[0].pos = city1.pos
+#one person emigrates to the other city
+p = list(city2.citizens)[0]
+p.pos = city1.pos
+#expat adopts new local currency
+p.seed_preference = [city1.seed] + p.seed_preference
+
 #list(city1.citizens)[0].pos = city2.pos
 
 
