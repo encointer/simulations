@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="e64d3e7b-bdfd-4012-a5ea-c287696caf46" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/copyright/encointer.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encointersim.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/encointer/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/encointer/classes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/encointer/constants.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/test_ceremony_pytest.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/test_city_pytest.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/test_coins_pytest.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/test_meetup_pytest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ceremonies/sim-communities.py" beforeDir="false" afterPath="$PROJECT_DIR$/sandbox/sim-communities.py" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="encointersim" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/encointer/classes.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1125">
+              <caret line="75" column="13" selection-start-line="75" selection-start-column="13" selection-end-line="75" selection-end-column="13" />
+              <folding>
+                <element signature="e#600#633#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tests/test_city_pytest.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="175">
+              <caret line="13" column="1" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tests/test_coins_pytest.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="7" column="1" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
+              <folding>
+                <element signature="e#599#658#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="30">
+              <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tests/test_ceremony_pytest.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="390">
+              <caret line="48" selection-start-line="48" selection-end-line="48" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>_meetups</find>
+      <find>iloc</find>
+      <find>neighbors</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>.label</replace>
+      <replace>groups</replace>
+    </replaceStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/encointer/constants.py" />
+        <option value="$PROJECT_DIR$/encointer/Person.py" />
+        <option value="$PROJECT_DIR$/encointer/Seed.py" />
+        <option value="$PROJECT_DIR$/encointer/Coins.py" />
+        <option value="$PROJECT_DIR$/encointer/Location.py" />
+        <option value="$PROJECT_DIR$/tests/test_city.py" />
+        <option value="$PROJECT_DIR$/encointer/City.py" />
+        <option value="$PROJECT_DIR$/tests/test_city_pytest.py" />
+        <option value="$PROJECT_DIR$/tests/test_coins_pytest.py" />
+        <option value="$PROJECT_DIR$/tests/test_ceremony_pytest.py" />
+        <option value="$PROJECT_DIR$/encointer/classes.py" />
+        <option value="$PROJECT_DIR$/tests/test_meetup_pytest.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="y" value="31" />
+    <option name="width" value="1260" />
+    <option name="height" value="923" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="Scope" currentSubView="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope" proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="simulations" type="b2602c69:ProjectViewProjectNode" />
+              <item name="simulations" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="simulations" type="b2602c69:ProjectViewProjectNode" />
+              <item name="simulations" type="462c0819:PsiDirectoryNode" />
+              <item name="encointer" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="simulations" type="b2602c69:ProjectViewProjectNode" />
+              <item name="simulations" type="462c0819:PsiDirectoryNode" />
+              <item name="tests" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope">
+        <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
+          <expand>
+            <path>
+              <item name="simulations" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+            </path>
+            <path>
+              <item name="simulations" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="encointer" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="simulations" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="tests" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python tests.pytest for test_coins_pytest.test_coins">
+    <configuration name="pytest for test_ceremony_pytest.test_ceremony_instantiate" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="encointersim" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_ceremony_pytest.test_ceremony_instantiate&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="pytest for test_ceremony_pytest.test_ceremony_two" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="encointersim" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_ceremony_pytest.test_ceremony_two&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="pytest for test_city_pytest.test_generate_newcomer" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="encointersim" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_city_pytest.test_generate_newcomer&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="pytest for test_coins_pytest.test_coins" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="encointersim" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_coins_pytest.test_coins&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="pytest for test_coins_pytest.test_coins_instantiate" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="encointersim" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_coins_pytest.test_coins_instantiate&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python tests.pytest for test_coins_pytest.test_coins" />
+        <item itemvalue="Python tests.pytest for test_coins_pytest.test_coins_instantiate" />
+        <item itemvalue="Python tests.pytest for test_city_pytest.test_generate_newcomer" />
+        <item itemvalue="Python tests.pytest for test_ceremony_pytest.test_ceremony_two" />
+        <item itemvalue="Python tests.pytest for test_ceremony_pytest.test_ceremony_instantiate" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e64d3e7b-bdfd-4012-a5ea-c287696caf46" name="Default Changelist" comment="" />
+      <created>1547197898798</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1547197898798</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TestHistory">
+    <history-entry file="pytest_for_test_meetup_pytest_test_meetup_few_have_met_before - 2019.01.12 at 00h 36m 57s.xml">
+      <configuration name="pytest for test_meetup_pytest.test_meetup_few_have_met_before" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_meetup_pytest_test_meetup_few_have_met_before - 2019.01.12 at 00h 39m 59s.xml">
+      <configuration name="pytest for test_meetup_pytest.test_meetup_few_have_met_before" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_meetup_pytest_test_meetup_few_have_met_before - 2019.01.12 at 00h 42m 36s.xml">
+      <configuration name="pytest for test_meetup_pytest.test_meetup_few_have_met_before" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_meetup_pytest_test_meetup_few_have_met_before - 2019.01.12 at 00h 43m 28s.xml">
+      <configuration name="pytest for test_meetup_pytest.test_meetup_few_have_met_before" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_meetup_pytest_test_meetup_few_have_met_before - 2019.01.12 at 00h 44m 28s.xml">
+      <configuration name="pytest for test_meetup_pytest.test_meetup_few_have_met_before" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_ceremony_pytest_test_ceremony_instantiate - 2019.01.12 at 00h 53m 06s.xml">
+      <configuration name="pytest for test_ceremony_pytest.test_ceremony_instantiate" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_ceremony_pytest_test_ceremony_two - 2019.01.12 at 00h 53m 11s.xml">
+      <configuration name="pytest for test_ceremony_pytest.test_ceremony_two" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_city_pytest_test_generate_newcomer - 2019.01.12 at 00h 53m 19s.xml">
+      <configuration name="pytest for test_city_pytest.test_generate_newcomer" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_coins_pytest_test_coins_instantiate - 2019.01.12 at 00h 53m 33s.xml">
+      <configuration name="pytest for test_coins_pytest.test_coins_instantiate" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_coins_pytest_test_coins - 2019.01.12 at 00h 53m 37s.xml">
+      <configuration name="pytest for test_coins_pytest.test_coins" configurationId="tests" />
+    </history-entry>
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="31" width="1260" height="923" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4981203" visible="true" weight="0.24939074" />
+      <window_info id="Structure" order="1" sideWeight="0.5018797" side_tool="true" weight="0.24939074" />
+      <window_info id="Favorites" order="2" sideWeight="0.5018797" side_tool="true" weight="0.24939074" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49959382" visible="true" weight="0.32828283" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39904422" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.3297491" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.3299748" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50040615" side_tool="true" weight="0.3299748" />
+      <window_info anchor="bottom" id="Python Console" order="10" weight="0.34760705" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/encointer/person.py" />
+    <entry file="file://$PROJECT_DIR$/encointer/seed.py" />
+    <entry file="file://$PROJECT_DIR$/encointer/coins.py" />
+    <entry file="file://$PROJECT_DIR$/encointer/location.py" />
+    <entry file="file://$PROJECT_DIR$/encointer/city.py" />
+    <entry file="file://$USER_HOME$/.virtualenvs/encointersim/lib/python3.6/site-packages/shapely/geometry/point.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="178">
+          <caret line="208" selection-start-line="208" selection-end-line="208" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/test_meetup_pytest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="712">
+          <caret line="71" selection-start-line="71" selection-end-line="71" />
+          <folding>
+            <element signature="e#599#643#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/encointer/constants.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" selection-start-line="15" selection-end-line="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/encointer/classes.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1125">
+          <caret line="75" column="13" selection-start-line="75" selection-start-column="13" selection-end-line="75" selection-end-column="13" />
+          <folding>
+            <element signature="e#600#633#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/test_ceremony_pytest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="48" selection-start-line="48" selection-end-line="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/test_city_pytest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="13" column="1" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/test_coins_pytest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="1" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
+          <folding>
+            <element signature="e#599#658#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="Copyright.UI">
+        <settings>
+          <last-edited>encointer</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

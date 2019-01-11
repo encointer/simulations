@@ -1,2 +1,3 @@
-ceremonies/*.svg
-ceremonies/fig_for_paper
+sandbox/*.svg
+sandbox/fig_for_paper
+*__pycache__*
